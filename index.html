@@ -8,25 +8,31 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-	<div class="container" id="app">
-		<h2 class="mb-3">Calculadora de Propinas</h2>
+    <div class="container" id="app">
+        <h2 class="mb-3 text-center">Calculadora de Propinas</h2>
 
-		<div class="mb-3">
-			<label for="billAmount" class="form-label">Monto de la factura:</label>
-			<input v-model.number="billAmount" type="number" class="form-control" id="billAmount" required>
-		</div>
-		<div class="mb-3">
-			<label for="tipPercentage" class="form-label">Porcentaje de propina:</label>
-			<input v-model.number="tipPercentage" type="number" class="form-control" id="tipPercentage" required>
-		</div>
-		<button @click="calculateTip" class="btn btn-primary">Calcular</button>
+        <div class="mb-3">
+            <label for="billAmount" class="form-label">Monto de la factura:</label>
+            <input v-model.number="billAmount" type="number" class="form-control" id="billAmount" required>
+        </div>
+        <div class="mb-3">
+            <label for="tipPercentage" class="form-label">Porcentaje de propina:</label>
+            <input v-model.number="tipPercentage" type="number" class="form-control" id="tipPercentage" required>
+        </div>
+        <div class="mb-3">
+            <label for="currency" class="form-label">Moneda:</label>
+            <select v-model="selectedCurrency" class="form-control" id="currency">
+                <option v-for="(rate, currency) in exchangeRates" :value="currency">{{ currency }}</option>
+            </select>
+        </div>
+        <button @click="calculateTip" class="btn btn-primary w-100">Calcular Propina</button>
 
-		<div class="mt-4 results-container">
-			<h4>Resultado</h4>
-			<p>Monto de la propina: $<span class="highlight">{{ tipAmount.toFixed(2) }}</span></p>
-			<p>Toral a pagar: $<span class="highlight">{{ totalAmount.toFixed(2) }}</span></p>
-		</div>
-	</div>
+        <div class="mt-4 results-container">
+            <h4>Resultado:</h4>
+            <p>Monto de la propina: {{ selectedCurrency }} <span class="highlight">{{ (tipAmount * exchangeRates[selectedCurrency]).toFixed(2) }}</span></p>
+            <p>Total a pagar: {{ selectedCurrency }} <span class="highlight">{{ (totalAmount * exchangeRates[selectedCurrency]).toFixed(2) }}</span></p>
+        </div>
+    </div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="app.js"></script>
